@@ -1,0 +1,37 @@
+<html>
+<head>
+	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  	<script src="ajax.js" type="text/javascript"></script>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"> 
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+	<link rel="stylesheet" type="text/css" href="menu.css">
+  </head>
+<body onload="lerClientes()">
+	<div id="menu">
+		<ul>
+			<li><a href="index.php">Home</a></li>
+			<li><a href="quartos.html">Quartos</a></li>
+			<li><a href="#">Clientes</a></li>
+			<li><a href="reservas.html">Reservas</a></li>
+		</ul>
+	</div>
+	<section>
+		<h2 class="centralizado">Gerenciamento de clientes</h2>
+		<p class="centralizado"></p>
+		<table id="resposta" border=1 width=80% align=center>
+			<thead>
+				<th>Nome</th>
+				<th>Documento</th>
+				<th>Data Nascimento</th>
+				<th>Cidade</th>
+				<th>Estado</th>
+				<th>Ações</th>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</section>
+</body>
+
+</html>
