@@ -1,4 +1,4 @@
-function validaData(campo, valor) {
+function validaData(valor) {
     var date = valor;
     var ardt = new Array;
     var ExpReg = new RegExp("(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/[12][0-9]{3}");
@@ -6,23 +6,25 @@ function validaData(campo, valor) {
     erro = false;
     if (date.search(ExpReg) == -1) {
         erro = true;
-    } else if (((ardt[1] == 4) || (ardt[1] == 6) || (ardt[1] == 9) || (ardt[1] == 11)) && (ardt[0] > 30))
+    } else if (((date[1] == 4) || (date[1] == 6) || (date[1] == 9) || (date[1] == 11)) && (date[0] > 30))
         erro = true;
-    else if (ardt[1] == 2) {
-        if ((ardt[0] > 28) && ((ardt[2] % 4) != 0))
+    else if (date[1] == 2) {
+        if ((date[0] > 28) && ((date[2] % 4) != 0))
             erro = true;
-        if ((ardt[0] > 29) && ((ardt[2] % 4) == 0))
+        if ((date[0] > 29) && ((date[2] % 4) == 0))
             erro = true;
     }
     if (erro) {
         alert("Data inválida!");
     }
+    return erro;
 }
 
 function validaDataHora(valor) {
     var matches = valor.match(/^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/);
+    var erro = false;
     if (matches === null) {
-        alert("Data/hora inválida!");
+        erro = true;
     } else {
         var year = parseInt(matches[3], 10);
         var month = parseInt(matches[2], 10) - 1; // months are 0-11
@@ -34,9 +36,14 @@ function validaDataHora(valor) {
             date.getMonth() != month ||
             date.getDate() !== day ||
             date.getHours() !== hour ||
-            date.getMinutes() !== minute
-        ) {
+            date.getMinutes() !== minute) 
+        {
+            erro = true;
+        }
+
+        if (erro) {
             alert("Data/hora inválida!");
         }
+        return erro;
     }
 }

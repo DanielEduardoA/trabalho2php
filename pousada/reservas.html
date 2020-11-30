@@ -1,24 +1,37 @@
 <html>
+
 <head>
 	<script src="//code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  	<script src="ajax.js" type="text/javascript"></script>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"> 
-	  <link rel="stylesheet" type="text/css" href="estilo.css">
-	  <link rel="stylesheet" type="text/css" href="menu.css">
-  </head>
-<body onload="lerReservas()">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js" type="text/javascript"></script>
+	<script src="ajax.js" type="text/javascript"></script>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="estilo.css">
+	<link rel="stylesheet" type="text/css" href="menu.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+	<script src="mascaraData.js" type="text/javascript"></script>
+	<script src="mascaraMoeda.js" type="text/javascript"></script>
+	<script src="mascaraDataHora.js" type="text/javascript"></script>
+	<script src="validacao.js" type="text/javascript"></script>
+</head>
+
+<body onload="preencherTabelaReservas()">
 	<div id="menu">
 		<ul>
 			<li><a href="index.php">Home</a></li>
-			<li><a href="quartos.html">Quartos</a></li>
 			<li><a href="clientes.html">Clientes</a></li>
 			<li><a href="#">Reservas</a></li>
 		</ul>
 	</div>
 	<section>
 		<h2 class="centralizado">Gerenciamento de reservas</h2>
-		<p class="centralizado"></p>
+		<span id="erro" class="erro centralizado"></span>
+
+		<input type="button" class="adicionarReservas" value="Adicionar">
+
+
 		<table id="resposta" border=1 width=80% align=center>
 			<thead>
 				<th>Cliente</th>
@@ -28,11 +41,133 @@
 				<th>Valor reserva</th>
 				<th>Status</th>
 				<th>Data hora</th>
+				<th>Ações</th>
 			</thead>
 			<tbody>
 			</tbody>
 		</table>
 	</section>
+
+	<div id="adicionarReservaModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="form_adicionar_reserva">
+					<div class="modal-header">
+						<h4 class="modal-title">Adicionar Reserva</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+						<span id="erro_inserir" class="erro"></span>
+						<input type="hidden" id="id" name="id" class="form-control">
+						<div class="form-group">
+							<div class="form-group">
+								<label>Cliente</label>
+								<select id="cliente" name="cliente" required>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Quarto</label>
+								<select id="quarto" name="quarto" required>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Data Entrada</label>
+								<input type="text" onkeypress="mascaraData( this, event )" id="dataEntrada"
+									name="dataEntrada" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Data Saída</label>
+								<input type="text" onkeypress="mascaraData( this, event )" id="dataSaida"
+									name="dataSaida" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Valor</label>
+								<input type="text" id="valor" name="valorReserva" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Data Hora</label>
+								<input type="text" id="dataHora" name="dataHora" class="form-control data-hora" required>
+							</div>
+							<div class="form-group">
+								<label>Status</label>
+								<select id="status" name="status" required>
+									<option value="">Selecione</option>
+									<option value="checkin">Checkin</option>
+									<option value="checkout">Checkout</option>
+									<option value="cancelada">Cancelada</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button data-dismiss="modal">Cancelar</button>
+						<button id="adicionarReserva" type="submit">Adicionar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="alterarReservaModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form id="form_alterar_reserva">
+					<div class="modal-header">
+						<h4 class="modal-title">Alterar Reserva</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					</div>
+					<div class="modal-body">
+						<span id="erro_alterar" class="erro"></span>
+						<input type="hidden" id="id_u" name="id" class="form-control">
+						<div class="form-group">
+							<div class="form-group">
+								<label>Cliente</label>
+								<select id="cliente_u" name="cliente" required>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Quarto</label>
+								<select id="quarto_u" name="quarto" required>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Data Entrada</label>
+								<input type="text" onkeypress="mascaraData( this, event )" id="dataEntrada_u"
+									name="dataEntrada" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Data Saída</label>
+								<input type="text" onkeypress="mascaraData( this, event )" id="dataSaida_u"
+									name="dataSaida" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Valor</label>
+								<input type="text" id="valor_u" name="valorReserva" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Data Hora</label>
+								<input type="text" id="dataHora_u" name="dataHora" class="form-control data-hora" required>
+							</div>
+							<div class="form-group">
+								<label>Status</label>
+								<select id="status_u" name="status" required>
+									<option value="">Selecione</option>
+									<option value="checkin">Checkin</option>
+									<option value="checkout">Checkout</option>
+									<option value="cancelada">Cancelada</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button data-dismiss="modal">Cancelar</button>
+						<button id="alterarReserva" type="submit">Alterar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 
 </html>

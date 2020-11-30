@@ -11,7 +11,6 @@
 	<div id="menu">
 		<ul>
 			<li><a href="">Home</a></li>
-			<li><a href="quartos.html">Quartos</a></li>
 			<li><a href="clientes.html">Clientes</a></li>
 			<li><a href="reservas.html">Reservas</a></li>
 		</ul>
