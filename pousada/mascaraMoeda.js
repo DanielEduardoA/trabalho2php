@@ -1,1 +1,1 @@
-$('#valor').mask("#.##0,00", { reverse: true });
+$('.moeda').mask("#.##0,00", { reverse: true });

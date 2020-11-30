@@ -31,7 +31,7 @@
 		if($id == ""){
 			$sql = "insert into reservas (id_quarto, id_cliente, data_entrada, data_saida, valor_reserva, status, data_hora) values ('$quarto', '$cliente', '$dataEntradaFormatada', '$dataSaidaFormatada', '$valorFomatado', '$status', '$dataHoraFormatada')";
 		}else{
-			$sql = "update reservas set data_entrada = '$dataEntradaFormatada', data_saida = '$dataSaidaFormatada', valor_reserva = '$valorFomatado', data_hora = '$dataHoraFormatada', status = '$status' where id = ".$id;
+			$sql = "update reservas set id_quarto = '$quarto', id_cliente = '$cliente', data_entrada = '$dataEntradaFormatada', data_saida = '$dataSaidaFormatada', valor_reserva = '$valorFomatado', data_hora = '$dataHoraFormatada', status = '$status' where id = ".$id;
 		}
 		
         $resultado = mysqli_query($conexao, $sql);
